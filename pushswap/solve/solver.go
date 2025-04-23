@@ -2,10 +2,15 @@ package solver
 
 import (
 	"fmt"
+	"os"
+	ops "push-swap/common"
 	"sort"
 )
 
 func Solve(stackA []int) {
+	if sort.IntsAreSorted(stackA) {
+		return
+	}
 	switch len(stackA) {
 	case 2:
 		SortTwo(&stackA)
@@ -19,7 +24,8 @@ func Solve(stackA []int) {
 func SortTwo(stackA *[]int) {
 	a := *stackA
 	if a[0] > a[1] {
-		sa(a)
+		ops.Sa(a)
+		fmt.Println("sa")
 	}
 }
 
@@ -57,26 +63,34 @@ func SortStack(stackA *[]int) {
 		half := len(a) / 2
 		if half >= index {
 			for min != a[0] {
-				if min == a[1] && a[0]-1 == min {
-					sa(a)
+				if min == a[1] {
+					ops.Sa(a)
+					fmt.Println("sa")
 				} else {
-					ra(a)
+					ops.Ra(a)
+					fmt.Println("ra")
 				}
 			}
 		} else {
 			for min != a[0] {
-				rra(a)
+				ops.Rra(a)
+				fmt.Println("rra")
 			}
 		}
-		pb(&a, &b)
+		ops.Pb(&a, &b)
+		fmt.Println("pb")
 	}
 
 	SortThree(&a)
 
 	for len(b) != 0 {
-		pa(&a, &b)
+		ops.Pa(&a, &b)
+		fmt.Println("pa")
 	}
-	// fmt.Println(a)
+	// Print sorted array if environement variable sorted == show
+	if os.Getenv("sorted") == "show" {
+		fmt.Println("\033[33m", a, "\033[0m")
+	}
 }
 
 func GetMin(a []int) (int, int) {
